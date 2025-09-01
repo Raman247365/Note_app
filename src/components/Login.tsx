@@ -21,8 +21,9 @@ const Login: React.FC<LoginProps> = ({ onSwitchToSignup }) => {
 
     try {
       await login(email, password);
-    } catch (err: any) {
-      setError(err.response?.data?.error || 'Login failed');
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { error?: string } } };
+      setError(error.response?.data?.error || 'Login failed');
     } finally {
       setLoading(false);
     }
@@ -101,7 +102,7 @@ const Login: React.FC<LoginProps> = ({ onSwitchToSignup }) => {
                 onClick={onSwitchToSignup}
                 className="text-blue-600 hover:text-blue-700 font-medium transition-colors"
               >
-                Don't have an account? Sign up
+                Don&apos;t have an account? Sign up
               </button>
             </div>
           </form>

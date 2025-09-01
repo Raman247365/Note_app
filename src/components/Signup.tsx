@@ -26,8 +26,9 @@ const Signup: React.FC<SignupProps> = ({ onSwitchToLogin }) => {
     try {
       await signup(email, password, name, dateOfBirth);
       setOtpSent(true);
-    } catch (err: any) {
-      setError(err.response?.data?.error || 'Signup failed');
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { error?: string } } };
+      setError(error.response?.data?.error || 'Signup failed');
     } finally {
       setLoading(false);
     }
@@ -40,8 +41,9 @@ const Signup: React.FC<SignupProps> = ({ onSwitchToLogin }) => {
 
     try {
       await verifyOtp(email, otp, password, name, dateOfBirth);
-    } catch (err: any) {
-      setError(err.response?.data?.error || 'OTP verification failed');
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { error?: string } } };
+      setError(error.response?.data?.error || 'OTP verification failed');
     } finally {
       setLoading(false);
     }

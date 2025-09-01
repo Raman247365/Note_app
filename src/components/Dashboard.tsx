@@ -21,7 +21,7 @@ const Dashboard: React.FC = () => {
     try {
       const response = await api.get('/notes');
       setNotes(response.data);
-    } catch (err) {
+    } catch {
       setError('Failed to fetch notes');
     }
   };
@@ -36,8 +36,9 @@ const Dashboard: React.FC = () => {
       setNotes([response.data, ...notes]);
       setTitle('');
       setContent('');
-    } catch (err: any) {
-      setError(err.response?.data?.error || 'Failed to create note');
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { error?: string } } };
+      setError(error.response?.data?.error || 'Failed to create note');
     } finally {
       setLoading(false);
     }
@@ -47,8 +48,9 @@ const Dashboard: React.FC = () => {
     try {
       await api.delete(`/notes/${id}`);
       setNotes(notes.filter(note => note._id !== id));
-    } catch (err: any) {
-      setError(err.response?.data?.error || 'Failed to delete note');
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { error?: string } } };
+      setError(error.response?.data?.error || 'Failed to delete note');
     }
   };
 
